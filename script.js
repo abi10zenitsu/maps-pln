@@ -1,55 +1,80 @@
-const map = L.map('map').setView([-6.8895, 109.6741], 11); // Fokus ke Pekalongan
+// Inisialisasi peta
+const map = L.map('map').setView([-6.9, 109.65], 10);
 
+// Tambahkan tile layer seperti Google Maps style
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-// Data marker lokasi PLN
-const plnLocations = [
+// Data lokasi-lokasi PLN
+const locations = [
   {
     name: "PLN UP3 Pekalongan",
-    coords: [-6.8895, 109.6741],
-    image: "FOTO/PLN UP3 PEKALONGAN.jpg",
-    address: "Jl. Manggis No.2, Pekalongan Timur, Kota Pekalongan, Jawa Tengah",
-    hours: "Senin–Kamis 08:00–15:00, Jumat 08:30–15:30",
-    notes: "Siaga Ramadan & edukasi PLN Mobile"
+    coords: [-6.8896, 109.6753],
+    address: "Jl. Majapahit No.2, Poncol, Pekalongan Timur",
+    description: "Mengelola pelayanan pelanggan dan distribusi listrik wilayah Pekalongan.",
+    images: [
+      "image/PLN BAWAH.jpg",
+      "image/PLN UP3 PEKALONGAN.jpg",
+      "image/PLN DALAM.jpg"
+    ]
   },
   {
     name: "PLN ULP Wiradesa",
-    coords: [-6.8975, 109.6032],
-    image: "https://i.imgur.com/NKDrSkm.jpg", // Ganti ke foto asli jika ada
-    address: "Jl. Raya Pantura Wiradesa, Kab. Pekalongan",
-    hours: "Senin–Jumat 08:00–15:00",
-    notes: "Layanan migrasi listrik & pasang baru"
-  },
-  {
-    name: "PLN ULP Gringsing",
-    coords: [-6.9735, 109.8144],
-    image: "https://i.imgur.com/8iK3dFb.jpg", // Ganti ke foto asli jika ada
-    address: "Kec. Gringsing, Kab. Batang, Jawa Tengah",
-    hours: "Senin–Jumat 08:00–15:00",
-    notes: "Pemeliharaan jaringan rutin"
+    coords: [-6.9007, 109.6081],
+    address: "Jl. Raya Wiradesa No.128, Wiradesa",
+    description: "Melayani wilayah Kecamatan Wiradesa dan sekitarnya.",
+    images: [
+      "images/ulp-wiradesa-1.jpg",
+      "images/ulp-wiradesa-2.jpg",
+      "images/ulp-wiradesa-3.jpg"
+    ]
   },
   {
     name: "PLN ULP Batang",
-    coords: [-6.9264, 109.7179],
-    image: "https://i.imgur.com/vSbF1mU.jpg", // Ganti ke foto asli jika ada
-    address: "Jl. Jend. Sudirman No.71, Batang",
-    hours: "Senin–Jumat 08:00–15:00",
-    notes: "Penyaluran sambungan subsidi"
+    coords: [-6.8914, 109.5330],
+    address: "Jl. Jenderal Sudirman No.25, Kauman, Batang",
+    description: "Pelayanan kelistrikan wilayah Batang dan sekitarnya.",
+    images: [
+      "images/ulp-batang-1.jpg",
+      "images/ulp-batang-2.jpg",
+      "images/ulp-batang-3.jpg"
+    ]
+  },
+  {
+    name: "PLN ULP Kedungwuni",
+    coords: [-6.9605, 109.6483],
+    address: "Jl. Raya Kedungwuni, Kedungwuni Timur",
+    description: "Menangani jaringan dan layanan pelanggan Kedungwuni.",
+    images: [
+      "images/ulp-kedungwuni-1.jpg",
+      "images/ulp-kedungwuni-2.jpg",
+      "images/ulp-kedungwuni-3.jpg"
+    ]
+  },
+  {
+    name: "PLN ULP Kajen",
+    coords: [-7.0264, 109.6416],
+    address: "Jl. Mandurorejo No.17, Kajen",
+    description: "Layanan teknis dan administrasi kelistrikan wilayah Kajen.",
+    images: [
+      "images/ulp-kajen-1.jpg",
+      "images/ulp-kajen-2.jpg",
+      "images/ulp-kajen-3.jpg"
+    ]
   }
 ];
 
-// Tambahkan semua marker ke peta
-plnLocations.forEach(loc => {
-  const marker = L.marker(loc.coords).addTo(map);
-  marker.bindPopup(`
-    <div style="text-align:left;">
-      <strong>${loc.name}</strong><br>
-      <img src="${loc.image}" alt="${loc.name}" width="200" style="margin: 6px 0;"><br>
-      <b>Alamat:</b> ${loc.address}<br>
-      <b>Jam Operasional:</b> ${loc.hours}<br>
-      <b>Info:</b> ${loc.notes}
-    </div>
-  `);
+// Tambahkan marker ke peta
+locations.forEach(loc => {
+  const gallery = loc.images.map(src => `<img src="${src}" alt="Foto ${loc.name}">`).join('');
+  const popupContent = `
+    <b>${loc.name}</b><br>
+    <i>${loc.address}</i><br><br>
+    ${loc.description}
+    <div class="image-gallery">${gallery}</div>
+  `;
+  L.marker(loc.coords)
+    .addTo(map)
+    .bindPopup(popupContent);
 });
